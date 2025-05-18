@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestão de Notas</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+    }
+    header {
+      background-color: #112;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 2rem;
+      color: #4deeea;
+    }
+    main {
+      padding: 2rem;
+    }
+    form {
+      background-color: #1e2a38;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    input, button, select {
+      padding: 0.6rem;
+      margin: 0.5rem 0.5rem 0.5rem 0;
+      border: none;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #4deeea;
+      color: #000;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    button:hover {
+      transform: scale(1.05);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #1e2a38;
+    }
+    th, td {
+      border: 1px solid #4deeea;
+      padding: 0.5rem;
+      text-align: left;
+    }
+    th {
+      background-color: #16222a;
+    }
+    #detalhes-notas {
+      background-color: #1e2a38;
+      padding: 1rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+    }
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <header>Gestão de Notas</header>
+  <main>
+    <form id="form-aluno">
+      <input type="text" id="nome" placeholder="Nome" required />
+      <input type="text" id="matricula" placeholder="Matrícula" required />
+      <input type="email" id="email" placeholder="E-mail" required />
+      <button type="submit">Cadastrar</button>
+    </form>
+
+    <h2>Lista de Alunos</h2>
+    <table>
+      <thead>
+        <tr><th>Nome</th><th>Matrícula</th><th>E-mail</th><th>Ações</th></tr>
+      </thead>
+      <tbody id="tabela-alunos"></tbody>
+    </table>
+
+    <div id="detalhes-notas" class="fade-in"></div>
+  </main>
+
+  <script>
+    const urlBase = 'http://localhost:5000';
+
+    document.getElementById('form-aluno').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nome = document.getElementById('nome').value;
+      const matricula = document.getElementById('matricula').value;
+      const email = document.getElementById('email').value;
+      await fetch(`${urlBase}/alunos`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, matricula, email })
+      });
+      carregarAlunos();
+      e.target.reset();
+    });
+
+    async function carregarAlunos() {
+      const res = await fetch(`${urlBase}/alunos`);
+      const alunos = await res.json();
+      const tabela = document.getElementById('tabela-alunos');
+      tabela.innerHTML = '';
+      alunos.forEach(aluno => {
+        const linha = document.createElement('tr');
+        linha.innerHTML = `
+          <td>${aluno.nome}</td>
+          <td>${aluno.matricula}</td>
+          <td>${aluno.email}</td>
+          <td><button onclick="mostrarNotas(${aluno.id}, '${aluno.nome}')">Ver Notas</button></td>
+        `;
+        tabela.appendChild(linha);
+      });
+    }
+
+    async function mostrarNotas(id, nome) {
+      const res = await fetch(`${urlBase}/alunos/${id}/notas`);
+      const dados = await res.json();
+      const div = document.getElementById('detalhes-notas');
+      div.innerHTML = `
+        <h3>Notas de ${nome}</h3>
+        <ul>
+          ${dados.notas.map(n => `<li>${n.disciplina}: ${n.nota}</li>`).join('')}
+        </ul>
+        <strong>Média: ${dados.media.toFixed(2)}</strong>
+        <h4>Registrar nova nota:</h4>
+        <form onsubmit="registrarNota(event, ${id})">
+          <input type="text" name="disciplina" placeholder="Disciplina" required />
+          <input type="number" name="nota" step="0.01" placeholder="Nota" required />
+          <button type="submit">Salvar Nota</button>
+        </form>
+      `;
+      div.classList.remove('fade-in');
+      void div.offsetWidth;
+      div.classList.add('fade-in');
+    }
+
+    async function registrarNota(e, aluno_id) {
+      e.preventDefault();
+      const form = e.target;
+      const disciplina = form.disciplina.value;
+      const nota = parseFloat(form.nota.value);
+      await fetch(`${urlBase}/notas`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ aluno_id, disciplina, nota })
+      });
+      mostrarNotas(aluno_id, '');
+    }
+
+    carregarAlunos();
+  </script>
+</body>
+</html>
