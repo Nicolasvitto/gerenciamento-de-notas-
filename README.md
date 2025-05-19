@@ -50,7 +50,6 @@ Sistema web para cadastro de alunos e gerenciamento de notas, utilizando Python 
 
 ## Endpoints da API
 
-Abaixo estão os principais endpoints disponíveis na sua aplicação Flask:
 
 ### Alunos
 
