@@ -3,194 +3,73 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gestão de Notas</title>
+  <title>ProntoCell | Gestão de Assistência Técnica</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #fff;
-    }
-    header {
-      background-color: #112;
-      padding: 1rem 2rem;
-      text-align: center;
-      font-size: 2rem;
-      color: #4deeea;
-    }
-    main {
-      padding: 2rem;
-    }
-    form {
-      background-color: #1e2a38;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-bottom: 2rem;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
-    input, button, select {
-      padding: 0.6rem;
-      margin: 0.5rem 0.5rem 0.5rem 0;
-      border: none;
-      border-radius: 4px;
-    }
-    button {
-      background-color: #4deeea;
-      color: #000;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-    button:hover {
-      transform: scale(1.05);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background-color: #1e2a38;
-    }
-    th, td {
-      border: 1px solid #4deeea;
-      padding: 0.5rem;
-      text-align: left;
-    }
-    th {
-      background-color: #16222a;
-    }
-    #detalhes-notas {
-      background-color: #1e2a38;
-      padding: 1rem;
-      margin-top: 2rem;
-      border-radius: 8px;
-    }
-    .fade-in {
-      animation: fadeIn 0.5s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    :root { --navy:#101d35; --blue:#246bfe; --cyan:#56d5ff; --bg:#f4f7fc; --ink:#17233a; --muted:#71809a; --line:#e4eaf3; --danger:#e54949; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:var(--bg); color:var(--ink); }
+    button, input, select { font:inherit; }
+    .app { display:grid; grid-template-columns:250px 1fr; min-height:100vh; }
+    aside { background:var(--navy); color:#d9e3fb; padding:30px 16px; display:flex; flex-direction:column; gap:28px; }
+    .brand { display:flex; align-items:center; gap:11px; padding:0 12px; color:#fff; font-weight:800; font-size:21px; letter-spacing:-.7px; }
+    .brand-mark { width:34px; height:34px; border-radius:11px; display:grid; place-items:center; color:#10203b; background:var(--cyan); font-size:19px; box-shadow:0 8px 20px #56d5ff35; }
+    .brand small { display:block; color:#8da0c2; font-size:10px; letter-spacing:1.4px; margin-top:2px; }
+    nav { display:grid; gap:5px; }
+    nav a { color:#aebbd4; text-decoration:none; display:flex; align-items:center; gap:13px; padding:12px; border-radius:9px; font-size:14px; font-weight:600; }
+    nav a.active, nav a:hover { background:#22375d; color:#fff; }
+    .nav-icon { width:20px; text-align:center; font-size:17px; }
+    .support { margin-top:auto; background:#1a2c4d; border:1px solid #304567; padding:17px; border-radius:13px; font-size:12px; line-height:1.5; }
+    .support strong { color:#fff; display:block; margin-bottom:4px; }
+    .support button { margin-top:12px; border:0; background:#56d5ff; color:#10203b; border-radius:7px; padding:8px 10px; width:100%; font-weight:700; cursor:pointer; }
+    main { padding:26px 38px 38px; max-width:1600px; width:100%; margin:auto; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:30px; }
+    .greeting p { margin:0 0 4px; color:var(--muted); font-size:13px; }.greeting h1 { margin:0; font-size:25px; letter-spacing:-.8px; }
+    .top-actions { display:flex; align-items:center; gap:16px; }.bell { width:39px; height:39px; border-radius:50%; border:1px solid var(--line); background:white; cursor:pointer; color:#53627a; }
+    .profile { display:flex; align-items:center; gap:10px; font-size:13px; font-weight:700; }.avatar { width:37px; height:37px; border-radius:50%; background:linear-gradient(140deg,#f4bd86,#9b5533); color:white; display:grid; place-items:center; font-weight:800; }
+    .profile span { display:block; font-weight:500; color:var(--muted); font-size:11px; margin-top:2px; }
+    .hero { background:linear-gradient(105deg,#152d57,#1f61c6); color:white; border-radius:17px; padding:27px 30px; min-height:148px; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:space-between; margin-bottom:25px; }
+    .hero:after { content:""; position:absolute; right:50px; width:250px; height:250px; border:42px solid #72dcff30; border-radius:50%; }.hero:before { content:""; position:absolute; right:185px; bottom:-81px; width:150px; height:150px; background:#56d5ff22; border-radius:50%; }
+    .hero h2 { margin:0 0 8px; font-size:23px; letter-spacing:-.6px; }.hero p { margin:0; color:#c4dbff; font-size:14px; }.hero-content { position:relative; z-index:1; }.primary { border:0; cursor:pointer; padding:12px 16px; border-radius:8px; font-weight:800; background:#fff; color:#1955aa; box-shadow:0 8px 18px #091b3b40; position:relative; z-index:1; }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:27px; }.stat { background:#fff; padding:19px; border-radius:12px; border:1px solid var(--line); box-shadow:0 3px 11px #243b6c08; }.stat-top { display:flex; justify-content:space-between; align-items:center; }.stat label { color:var(--muted); font-size:12px; font-weight:650; }.stat-icon { width:33px; height:33px; display:grid; place-items:center; border-radius:9px; font-size:16px; }.blue { background:#e8f0ff;color:#246bfe }.yellow { background:#fff2d9;color:#db9200 }.purple { background:#f1eaff;color:#8356d9 }.green { background:#e3f8ef;color:#22a66e }.stat b { display:block; margin:13px 0 4px; font-size:25px; letter-spacing:-1px; }.stat small { color:#5fba8c; font-size:11px; font-weight:650; }.stat small.neutral { color:var(--muted); }
+    .section-head { display:flex; justify-content:space-between; align-items:center; margin:0 0 14px; }.section-head h2 { font-size:17px; letter-spacing:-.3px; margin:0; }.link-button { border:0; background:transparent; color:var(--blue); font-size:12px; font-weight:800; cursor:pointer; }
+    .card { background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden; box-shadow:0 3px 11px #243b6c08; }.table-wrap { overflow:auto; }.orders { width:100%; border-collapse:collapse; min-width:730px; }.orders th { color:#8490a6; background:#fbfcff; text-align:left; font-size:10px; letter-spacing:.35px; text-transform:uppercase; padding:13px 19px; border-bottom:1px solid var(--line); }.orders td { padding:15px 19px; border-bottom:1px solid #edf0f5; font-size:13px; }.orders tr:last-child td { border-bottom:0; }.device { font-weight:750; }.device small, .customer small { display:block; color:var(--muted); font-size:11px; font-weight:500; margin-top:3px; }.customer { font-weight:650; }.price { font-weight:750; }.status { display:inline-flex; padding:5px 8px; border-radius:20px; font-size:10px; font-weight:800; }.received { background:#e7efff; color:#2e6ada; }.progress { background:#fff1d7; color:#b97c00; }.ready { background:#ddf7ed; color:#188d60; }.action { border:0; background:#f0f4fa; color:#52617a; cursor:pointer; width:28px; height:28px; border-radius:7px; }
+    dialog { border:0; padding:0; border-radius:16px; width:min(510px,calc(100% - 30px)); box-shadow:0 20px 60px #0f1f3c60; }.modal { padding:26px; }.modal h2 { margin:0 0 5px; }.modal p { color:var(--muted); font-size:13px; margin:0 0 19px; }.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:13px; }.form-grid .full { grid-column:1/-1; } .field { display:grid; gap:6px; }.field label { font-size:12px; font-weight:700; color:#4a5870; }.field input, .field select { border:1px solid #dce3ef; padding:10px 11px; border-radius:8px; outline-color:var(--blue); color:var(--ink); background:white; }.modal-actions { display:flex; justify-content:flex-end; gap:9px; margin-top:22px; }.cancel { background:#f1f4f9; color:#53627a; border:0; cursor:pointer; border-radius:8px; padding:11px 15px; font-weight:700; }.save { background:var(--blue); color:white; border:0; cursor:pointer; border-radius:8px; padding:11px 15px; font-weight:800; }
+    .toast { position:fixed; right:25px; bottom:25px; padding:13px 17px; color:white; background:#183863; border-radius:9px; box-shadow:0 10px 30px #12234d33; transform:translateY(90px); transition:.25s; font-size:13px; font-weight:650; }.toast.show { transform:translateY(0); }
+    @media(max-width:900px) { .app{grid-template-columns:1fr} aside{display:none} main{padding:22px 18px}.stats{grid-template-columns:repeat(2,1fr)} }
+    @media(max-width:560px) { .profile div:not(.avatar){display:none}.hero{padding:23px;align-items:flex-start;gap:18px;flex-direction:column}.stats{grid-template-columns:1fr 1fr;gap:10px}.stat{padding:14px}.topbar{margin-bottom:22px}.greeting h1{font-size:21px}.form-grid{grid-template-columns:1fr}.form-grid .full{grid-column:auto} }
   </style>
 </head>
 <body>
-  <header>Gestão de Notas</header>
-  <main>
-    <form id="form-aluno">
-      <input type="text" id="nome" placeholder="Nome" required />
-      <input type="text" id="matricula" placeholder="Matrícula" required />
-      <input type="email" id="email" placeholder="E-mail" required />
-      <button type="submit">Cadastrar</button>
-    </form>
-
-    <h2>Lista de Alunos</h2>
-    <table>
-      <thead>
-        <tr><th>Nome</th><th>Matrícula</th><th>E-mail</th><th>Ações</th></tr>
-      </thead>
-      <tbody id="tabela-alunos"></tbody>
-    </table>
-
-    <div id="detalhes-notas" class="fade-in"></div>
-  </main>
-
+  <div class="app">
+    <aside>
+      <div class="brand"><div class="brand-mark">⌁</div><div>ProntoCell<small>ASSISTÊNCIA TÉCNICA</small></div></div>
+      <nav><a class="active" href="#inicio"><span class="nav-icon">▦</span>Visão geral</a><a href="#ordens"><span class="nav-icon">▤</span>Ordens de serviço</a><a href="#clientes"><span class="nav-icon">♙</span>Clientes</a><a href="#estoque"><span class="nav-icon">▣</span>Estoque</a><a href="#financeiro"><span class="nav-icon">◫</span>Financeiro</a><a href="#config"><span class="nav-icon">⚙</span>Configurações</a></nav>
+      <div class="support"><strong>Precisa de ajuda?</strong>Fale com o suporte ProntoCell.<button type="button" onclick="notify('Suporte acionado. Retornaremos em breve!')">Falar com suporte</button></div>
+    </aside>
+    <main id="inicio">
+      <header class="topbar"><div class="greeting"><p>Sábado, 27 de setembro</p><h1>Olá, Carlos! 👋</h1></div><div class="top-actions"><button class="bell" type="button" aria-label="Notificações" onclick="notify('Você não tem novas notificações.')">♧</button><div class="profile"><div class="avatar">CS</div><div>Carlos Silva<span>Administrador</span></div></div></div></header>
+      <section class="hero"><div class="hero-content"><h2>Seu dia começa organizado.</h2><p>Acompanhe os serviços da sua assistência em tempo real.</p></div><button class="primary" type="button" onclick="openOrder()">+ Nova ordem de serviço</button></section>
+      <section class="stats" aria-label="Resumo de ordens"><article class="stat"><div class="stat-top"><label>Ordens em aberto</label><span class="stat-icon blue">▤</span></div><b id="open-count">12</b><small>↑ 8% <span class="neutral">que ontem</span></small></article><article class="stat"><div class="stat-top"><label>Em manutenção</label><span class="stat-icon yellow">⌕</span></div><b id="progress-count">08</b><small>↑ 2 <span class="neutral">novas hoje</span></small></article><article class="stat"><div class="stat-top"><label>Prontos para entrega</label><span class="stat-icon purple">✓</span></div><b id="ready-count">05</b><small>↑ 3 <span class="neutral">aguardando cliente</span></small></article><article class="stat"><div class="stat-top"><label>Faturamento do mês</label><span class="stat-icon green">R$</span></div><b id="revenue">8.450</b><small>↑ 12% <span class="neutral">vs. mês anterior</span></small></article></section>
+      <section id="ordens"><div class="section-head"><h2>Ordens de serviço recentes</h2><button class="link-button" type="button" onclick="notify('Exibindo todas as ordens de serviço.')">Ver todas →</button></div><div class="card table-wrap"><table class="orders"><thead><tr><th>OS</th><th>Cliente</th><th>Aparelho</th><th>Problema</th><th>Status</th><th>Valor</th><th></th></tr></thead><tbody id="orders-body"><tr><td><b>#OS-1048</b></td><td class="customer">Mariana Costa<small>(11) 99876-2345</small></td><td class="device">iPhone 13<small>128 GB · Azul</small></td><td>Troca de tela</td><td><span class="status progress">Em manutenção</span></td><td class="price">R$ 680,00</td><td><button class="action" onclick="notify('OS-1048 selecionada.')">•••</button></td></tr><tr><td><b>#OS-1047</b></td><td class="customer">João Pedro<small>(11) 98765-4321</small></td><td class="device">Samsung Galaxy S22<small>256 GB · Preto</small></td><td>Não carrega</td><td><span class="status received">Recebido</span></td><td class="price">R$ 240,00</td><td><button class="action" onclick="notify('OS-1047 selecionada.')">•••</button></td></tr><tr><td><b>#OS-1046</b></td><td class="customer">Ana Beatriz<small>(11) 97654-3210</small></td><td class="device">Motorola Edge 30<small>128 GB · Branco</small></td><td>Troca de bateria</td><td><span class="status ready">Pronto</span></td><td class="price">R$ 190,00</td><td><button class="action" onclick="notify('OS-1046 selecionada.')">•••</button></td></tr><tr><td><b>#OS-1045</b></td><td class="customer">Ricardo Alves<small>(11) 96543-2109</small></td><td class="device">iPhone 11<small>64 GB · Roxo</small></td><td>Câmera traseira</td><td><span class="status progress">Em manutenção</span></td><td class="price">R$ 350,00</td><td><button class="action" onclick="notify('OS-1045 selecionada.')">•••</button></td></tr></tbody></table></div></section>
+    </main>
+  </div>
+  <dialog id="order-modal"><form class="modal" id="order-form"><h2>Nova ordem de serviço</h2><p>Registre o aparelho e o atendimento do cliente.</p><div class="form-grid"><div class="field"><label for="client">Nome do cliente</label><input id="client" required placeholder="Ex.: Camila Rocha"></div><div class="field"><label for="phone">Telefone</label><input id="phone" required placeholder="(11) 99999-9999"></div><div class="field"><label for="device">Aparelho</label><input id="device" required placeholder="Ex.: iPhone 14"></div><div class="field"><label for="value">Valor estimado</label><input id="value" required type="number" min="0" step="0.01" placeholder="0,00"></div><div class="field full"><label for="problem">Problema relatado</label><input id="problem" required placeholder="Ex.: Tela quebrada"></div><div class="field full"><label for="status">Status inicial</label><select id="status"><option value="received">Recebido</option><option value="progress">Em manutenção</option><option value="ready">Pronto</option></select></div></div><div class="modal-actions"><button type="button" class="cancel" onclick="closeOrder()">Cancelar</button><button class="save" type="submit">Criar ordem</button></div></form></dialog>
+  <div class="toast" id="toast" role="status"></div>
   <script>
-    const urlBase = 'http://localhost:5000'; // Corrija para a porta do Flask!
-
-    document.getElementById('form-aluno').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const nome = document.getElementById('nome').value;
-      const matricula = document.getElementById('matricula').value;
-      const email = document.getElementById('email').value;
-      await fetch(`${urlBase}/alunos`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nome, matricula, email })
-      });
-      carregarAlunos();
-      e.target.reset();
-      animarMensagem('Aluno cadastrado!');
+    const modal = document.getElementById('order-modal');
+    const labels = { received: ['Recebido', 'received'], progress: ['Em manutenção', 'progress'], ready: ['Pronto', 'ready'] };
+    function openOrder() { modal.showModal(); document.getElementById('client').focus(); }
+    function closeOrder() { modal.close(); }
+    function notify(message) { const toast=document.getElementById('toast'); toast.textContent=message; toast.classList.add('show'); clearTimeout(window.toastTimer); window.toastTimer=setTimeout(()=>toast.classList.remove('show'),3000); }
+    document.getElementById('order-form').addEventListener('submit', event => {
+      event.preventDefault(); const client=document.getElementById('client').value, phone=document.getElementById('phone').value, device=document.getElementById('device').value, problem=document.getElementById('problem').value, value=Number(document.getElementById('value').value), status=document.getElementById('status').value;
+      const number = 1049 + document.querySelectorAll('#orders-body tr').length - 4; const [statusText, statusClass] = labels[status];
+      document.getElementById('orders-body').insertAdjacentHTML('afterbegin', `<tr><td><b>#OS-${number}</b></td><td class="customer">${escapeHtml(client)}<small>${escapeHtml(phone)}</small></td><td class="device">${escapeHtml(device)}<small>Em análise</small></td><td>${escapeHtml(problem)}</td><td><span class="status ${statusClass}">${statusText}</span></td><td class="price">${value.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</td><td><button class="action" onclick="notify('OS-${number} selecionada.')">•••</button></td></tr>`);
+      const id = status === 'received' ? 'open-count' : status === 'progress' ? 'progress-count' : 'ready-count'; document.getElementById(id).textContent = String(Number(document.getElementById(id).textContent) + 1).padStart(2,'0');
+      document.getElementById('order-form').reset(); closeOrder(); notify(`OS-${number} criada com sucesso!`);
     });
-
-    async function carregarAlunos() {
-      const res = await fetch(`${urlBase}/alunos`);
-      const alunos = await res.json();
-      const tabela = document.getElementById('tabela-alunos');
-      tabela.innerHTML = '';
-      alunos.forEach(aluno => {
-        const linha = document.createElement('tr');
-        linha.innerHTML = `
-          <td>${aluno.nome}</td>
-          <td>${aluno.matricula}</td>
-          <td>${aluno.email}</td>
-          <td><button onclick="mostrarNotas(${aluno.id}, '${aluno.nome}')">Ver Notas</button></td>
-        `;
-        linha.classList.add('fade-in');
-        tabela.appendChild(linha);
-      });
-    }
-
-    async function mostrarNotas(id, nome) {
-      const res = await fetch(`${urlBase}/alunos/${id}/notas`);
-      const dados = await res.json();
-      const div = document.getElementById('detalhes-notas');
-      div.innerHTML = `
-        <h3>Notas de ${nome}</h3>
-        <ul>
-          ${dados.notas.map(n => `<li>${n.disciplina}: ${n.nota}</li>`).join('')}
-        </ul>
-        <strong>Média: ${dados.media.toFixed(2)}</strong>
-        <h4>Registrar nova nota:</h4>
-        <form onsubmit="registrarNota(event, ${id})">
-          <input type="text" name="disciplina" placeholder="Disciplina" required />
-          <input type="number" name="nota" step="0.01" placeholder="Nota" required />
-          <button type="submit">Salvar Nota</button>
-        </form>
-      `;
-      div.classList.remove('fade-in');
-      void div.offsetWidth;
-      div.classList.add('fade-in');
-    }
-
-    async function registrarNota(e, aluno_id) {
-      e.preventDefault();
-      const form = e.target;
-      const disciplina = form.disciplina.value;
-      const nota = parseFloat(form.nota.value);
-      await fetch(`${urlBase}/notas`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ aluno_id, disciplina, nota })
-      });
-      mostrarNotas(aluno_id, '');
-      animarMensagem('Nota registrada!');
-    }
-
-    function animarMensagem(texto) {
-      const msg = document.createElement('div');
-      msg.textContent = texto;
-      msg.style.position = 'fixed';
-      msg.style.bottom = '30px';
-      msg.style.left = '50%';
-      msg.style.transform = 'translateX(-50%)';
-      msg.style.background = '#4deeea';
-      msg.style.color = '#000';
-      msg.style.padding = '1rem 2rem';
-      msg.style.borderRadius = '10px';
-      msg.style.boxShadow = '0 0 10px rgba(0,0,0,0.3)';
-      msg.style.opacity = '0';
-      msg.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-      document.body.appendChild(msg);
-      requestAnimationFrame(() => {
-        msg.style.opacity = '1';
-        msg.style.transform = 'translateX(-50%) translateY(-10px)';
-      });
-      setTimeout(() => {
-        msg.style.opacity = '0';
-        msg.style.transform = 'translateX(-50%) translateY(0px)';
-        setTimeout(() => document.body.removeChild(msg), 300);
-      }, 2000);
-    }
-
-    carregarAlunos();
+    function escapeHtml(value) { const node=document.createElement('div'); node.textContent=value; return node.innerHTML; }
+    modal.addEventListener('click', event => { if (event.target === modal) closeOrder(); });
   </script>
 </body>
 </html>
